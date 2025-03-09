@@ -19,4 +19,3 @@ def register(request):
 
 def registration_success(request):
     return render(request, 'registration_success.html')
-
