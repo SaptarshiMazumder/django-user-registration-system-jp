@@ -31,58 +31,10 @@ function RegistrationForm() {
     fetchPrefectures();
   }, []);
 
-  // Run validation each time formData changes
   useEffect(() => {
-    validateForm();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    // 1. username: minimum 3 characters
-    if (formData.username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters.';
-    }
-
-    // 2. email: must be valid format & not duplicate
-    // (We simulate a duplicate check by disallowing "duplicate@example.com")
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Enter a valid email address.';
-    }
-    if (formData.email === 'duplicate@example.com') {
-      newErrors.email = 'This email is already registered.';
-    }
-
-    // 3. password: >=8 chars, uppercase, lowercase, digit
-    const password = formData.password;
-    if (password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters.';
-    }
-    if (!/[A-Z]/.test(password)) {
-      newErrors.password = 'Password must include an uppercase letter.';
-    }
-    if (!/[a-z]/.test(password)) {
-      newErrors.password = 'Password must include a lowercase letter.';
-    }
-    if (!/\d/.test(password)) {
-      newErrors.password = 'Password must include a digit.';
-    }
-
-    // 4. confirm password
-    if (password !== formData.password_confirm) {
-      newErrors.password_confirm = 'Passwords do not match.';
-    }
-
-    // 5. tel: digits only (if provided)
-    if (formData.tel && !/^\d+$/.test(formData.tel)) {
-      newErrors.tel = 'Telephone number must contain digits only.';
-    }
-
-
-    setErrors(newErrors);
-  };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -91,7 +43,6 @@ function RegistrationForm() {
 
   const handleSubmit = async (e) => {
   e.preventDefault();
-  validateForm(); // client-side validation
 
   // Only submit if no client-side errors
   if (Object.keys(errors).length === 0) {
