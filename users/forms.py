@@ -1,7 +1,7 @@
 # users/forms.py
 
 from django import forms
-from django.core.validators import MinLengthValidator, EmailValidator, RegexValidator
+from django.core.validators import MinLengthValidator, RegexValidator, EmailValidator
 from django.core.exceptions import ValidationError
 from .models import User, Pref
 
@@ -41,17 +41,24 @@ class UserRegistrationForm(forms.ModelForm):
         queryset=Pref.objects.all(),
         label="Prefecture",
         required=False
-    ) 
+    )
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 
+        fields = ['username', 'email', 'password',
                   'password_confirm', 'tel', 'pref']
-        
+
     def clean(self):
-            cleaned_data = super().clean()
-            password = cleaned_data.get('password')
-            password_confirm = cleaned_data.get('password_confirm')
-            if password and password_confirm and password != password_confirm:
-                raise ValidationError('Passwords do not match')
-            return cleaned_data
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+        password_confirm = cleaned_data.get('password_confirm')
+
+        
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('Email address is already registered.')
+
+        if password and password_confirm and password != password_confirm:
+            raise ValidationError('Passwords do not match')
+
+        return cleaned_data

@@ -16,6 +16,4 @@ class User(AbstractUser):
                              null=True, blank=True)
 
     def __str__(self):
-        return self.username
-
-   
+        return self.username + " " + self.email + " " + (self.pref.name if self.pref else "")
