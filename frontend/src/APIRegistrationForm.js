@@ -10,6 +10,17 @@ function APIRegistrationForm() {
         pref: '',
     })
     const [successMsg, setSuccessMsg] = useState('')
+    const [prefs, setPrefs] = useState([])
+    useEffect(() => {
+        const fetchPrefs = async () => {
+            const response = await fetch('http://127.0.0.1:8000/api/auth/prefs/', {
+                
+            });
+            const data = await response.json();
+            setPrefs(data);
+        }
+        fetchPrefs();
+    }, []);
     const handleFormDataChange = (e) => {
                 const {name, value} = e.target;
                 setFormData({
@@ -67,7 +78,7 @@ function APIRegistrationForm() {
                 <label>Prefecture</label>
                 <select name="pref" value={formData.pref} onChange={handleFormDataChange}>
                     <option value="option1">Select Prefecture</option>
-
+                    {prefs.map(pref => <option key={pref.id} value={pref.id}>{pref.name}</option>)}
                     
                 </select>
                 <button type="submit">Register</button>
