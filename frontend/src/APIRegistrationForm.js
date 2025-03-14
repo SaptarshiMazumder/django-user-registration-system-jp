@@ -10,14 +10,14 @@ function APIRegistrationForm() {
         pref: '',
     })
     const [successMsg, setSuccessMsg] = useState('')
+    const [errMsg, setErrMsg] = useState('')
     const [prefs, setPrefs] = useState([])
     useEffect(() => {
         const fetchPrefs = async () => {
-            const response = await fetch('http://127.0.0.1:8000/api/auth/prefs/', {
-                
-            });
+            const response = await fetch('http://127.0.0.1:8000/api/auth/prefs/');
             const data = await response.json();
             setPrefs(data);
+        
         }
         fetchPrefs();
     }, []);
@@ -31,35 +31,38 @@ function APIRegistrationForm() {
     
         
 
-        const handleSubmit = async(e) =>{
-        e.preventDefault();
-        setSuccessMsg('');
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+            setSuccessMsg('');
+            setErrMsg('');
 
-        const response = await fetch('http://127.0.01:8000/api/auth/register/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        });
-
-        if (response.status === 201){
-            setSuccessMsg('User registered successfully');
-            setFormData({
-                username: '',
-                email: '',
-                password: '',
-                password_confirm: '',
-                tel: '',
-                pref: '',
+            const response = await fetch('http://127.0.0.1:8000/api/auth/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
             });
+
+            if (response.ok) {
+                setSuccessMsg('User registered successfully');
+                setFormData({
+                    username: '',
+                    email: '',
+                    password: '',
+                    password_confirm: '',
+                    tel: '',
+                    pref: '',
+                });
+            } else {
+                try {
+                    const errorData = await response.json();
+                    setErrMsg(JSON.stringify(errorData));
+                } catch (error) {
+                    setErrMsg('An error occurred during registration.');
+                }
+            }
         }
-        else{
-            // handle error
-        }
-        
-        }
-    
 
     return (
         <div>
@@ -84,6 +87,7 @@ function APIRegistrationForm() {
                 <button type="submit">Register</button>
             </form>
             <p>{successMsg}</p>
+            <p>{errMsg}</p>
         </div>
     );
 
