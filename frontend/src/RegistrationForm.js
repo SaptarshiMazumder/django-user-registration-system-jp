@@ -12,22 +12,22 @@ function RegistrationForm() {
   });
 
   const [errors, setErrors] = useState({});
-  const [prefs, setPrefs] = useState([]);
+  const [prefs, setPrefs] = useState([{ id: 1, name: 'Tokyo' }, { id: 2, name: 'Osaka' }]);
   const [touched, setTouched] = useState({}); // Track what’s been typed in
 
   // Grab prefs from the backend
-  useEffect(() => {
-    async function getPrefs() {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/auth/prefs/');
-        const data = await response.json();
-        setPrefs(data.prefs);
-      } catch (err) {
-        console.log('Couldn’t fetch prefectures:', err);
-      }
-    }
-    getPrefs();
-  }, []);
+  // useEffect(() => {
+  //   async function getPrefs() {
+  //     try {
+  //       const response = await fetch('http://127.0.0.1:8000/auth/prefs/');
+  //       const data = await response.json();
+  //       setPrefs(data.prefs);
+  //     } catch (err) {
+  //       console.log('Couldn’t fetch prefectures:', err);
+  //     }
+  //   }
+  //   getPrefs();
+  // }, []);
 
   // Handle input changes
   const handleFormDataChange = (e) => {
@@ -130,9 +130,10 @@ function RegistrationForm() {
       <h1>Registration Form</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label>
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
+            id="username"
             name="username"
             value={formData.username}
             onChange={handleFormDataChange}
@@ -141,9 +142,10 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label>Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
+            id="email"
             name="email"
             value={formData.email}
             onChange={handleFormDataChange}
@@ -152,9 +154,10 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label>Password:</label>
+          <label htmlFor="password">Password:</label>
           <input
             type="password"
+            id="password"
             name="password"
             value={formData.password}
             onChange={handleFormDataChange}
@@ -163,9 +166,10 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label>Confirm Password:</label>
+          <label htmlFor="password_confirm">Confirm Password:</label>
           <input
             type="password"
+            id="password_confirm"
             name="password_confirm"
             value={formData.password_confirm}
             onChange={handleFormDataChange}
@@ -174,9 +178,10 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label>Telephone:</label>
+          <label htmlFor="tel">Telephone:</label>
           <input
             type="text"
+            id="tel"
             name="tel"
             value={formData.tel}
             onChange={handleFormDataChange}
@@ -185,8 +190,9 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label>Prefecture:</label>
+          <label htmlFor="pref">Prefecture:</label>
           <select
+            id="pref"
             name="pref"
             value={formData.pref}
             onChange={handleFormDataChange}
