@@ -1,134 +1,203 @@
 import React, { useState, useEffect } from 'react';
 
 function RegistrationForm() {
-  // Form state
+  // State for the form inputs
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     password_confirm: '',
     tel: '',
-    pref: null,
+    pref: ''
   });
 
   const [errors, setErrors] = useState({});
   const [prefectures, setPrefectures] = useState([]);
+  const [touched, setTouched] = useState({}); // Track what’s been typed in
 
+  // Grab prefectures from the backend
   useEffect(() => {
-    const fetchPrefectures = async () => {
+    async function getPrefectures() {
       try {
         const response = await fetch('http://127.0.0.1:8000/auth/prefectures/');
         const data = await response.json();
-        console.log('Prefectures:', data.prefectures);
         setPrefectures(data.prefectures);
-      } catch (error) {
-        console.error('Error fetching prefectures:', error);
+      } catch (err) {
+        console.log('Couldn’t get prefectures:', err);
       }
-    };
-
-    fetchPrefectures();
+    }
+    getPrefectures();
   }, []);
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [name]: value });
+    setTouched({ ...touched, [name]: true }); // Mark field as touched
+    checkErrors(name, value); // Validate just this field
   };
+
+  // Check errors for a specific field
+  const checkErrors = (field, value) => {
+    let newErrors = { ...errors };
+
+    if (field === 'username' && touched.username && value.trim().length < 3) {
+      newErrors.username = 'Username needs to be 3 characters or more.';
+    } else if (field === 'username') {
+      delete newErrors.username;
+    }
+
+    if (field === 'email' && touched.email && !/\S+@\S+\.\S+/.test(value)) {
+      newErrors.email = 'That’s not a real email.';
+    } else if (field === 'email') {
+      delete newErrors.email;
+    }
+
+    if (field === 'password' && touched.password) {
+      if (value.length < 8) {
+        newErrors.password = 'Password’s too short, needs 8 characters.';
+      } else if (!/[a-z]/.test(value)) {
+        newErrors.password = 'Add a lowercase letter.';
+      } else if (!/[A-Z]/.test(value)) {
+        newErrors.password = 'Add an uppercase letter.';
+      } else if (!/\d/.test(value)) {
+        newErrors.password = 'Add a number.';
+      } else {
+        delete newErrors.password;
+      }
+    }
+
+    if (field === 'password_confirm' && touched.password_confirm && value !== formData.password) {
+      newErrors.password_confirm = 'Passwords don’t match.';
+    } else if (field === 'password_confirm') {
+      delete newErrors.password_confirm;
+    }
+
+    if (field === 'tel' && touched.tel && value && !/^\d+$/.test(value)) {
+      newErrors.tel = 'Phone should be just numbers.';
+    } else if (field === 'tel') {
+      delete newErrors.tel;
+    }
+
+    if (field === 'pref' && touched.pref && !value) {
+      newErrors.pref = 'Pick a prefecture.';
+    } else if (field === 'pref') {
+      delete newErrors.pref;
+    }
+
+    setErrors(newErrors);
+  };
+
+  // Submit the form
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+
+    // Mark all fields as touched to show errors if they’re empty
+    setTouched({
+      username: true,
+      email: true,
+      password: true,
+      password_confirm: true,
+      tel: true,
+      pref: true
+    });
+
+    // Run validation on everything
+    Object.keys(formData).forEach((key) => checkErrors(key, formData[key]));
+
+    // If there’s errors, stop here
+    if (Object.keys(errors).length > 0) {
+      alert('Fix the errors first!');
+      return;
+    }
+
     try {
       const response = await fetch('http://127.0.0.1:8000/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData), 
+        body: JSON.stringify(formData)
       });
       const result = await response.json();
 
       if (response.ok) {
-        // 201 Created => success
-        alert('Registered successfully!');
+        alert('You’re registered!');
       } else {
-        // 400 => form validation errors
-        console.log('Errors from Django:', result.errors);
-        // You could display these errors in the UI if you like
-        alert('Registration failed: ' + JSON.stringify(result.errors));
+        alert('Something went wrong: ' + JSON.stringify(result.errors));
       }
-    } catch (error) {
-      console.error('Network or server error:', error);
+    } catch (err) {
+      console.log('Submit failed:', err);
     }
-  
-};
+  };
 
   return (
     <div>
-      <h1>React Registration Form</h1>
-      <form onSubmit={handleSubmit} noValidate>
+      <h1>Registration Form</h1>
+      <form onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             name="username"
             value={formData.username}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
           {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
         </div>
-        
+
         <div>
           <label>Email:</label>
-          <input 
-            type="email" 
+          <input
+            type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
           {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
         </div>
-        
+
         <div>
           <label>Password:</label>
-          <input 
-            type="password" 
+          <input
+            type="password"
             name="password"
             value={formData.password}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
           {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
         </div>
-        
+
         <div>
           <label>Confirm Password:</label>
-          <input 
-            type="password" 
+          <input
+            type="password"
             name="password_confirm"
             value={formData.password_confirm}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
           {errors.password_confirm && <p style={{ color: 'red' }}>{errors.password_confirm}</p>}
         </div>
-        
+
         <div>
           <label>Telephone:</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             name="tel"
             value={formData.tel}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
           {errors.tel && <p style={{ color: 'red' }}>{errors.tel}</p>}
         </div>
-        
+
         <div>
           <label>Prefecture:</label>
-          <select 
+          <select
             name="pref"
             value={formData.pref}
             onChange={handleChange}
           >
-            <option value="">--Select Prefecture--</option>
-            {prefectures.map((pref) => (
-              <option key={pref.id} value={pref.id}>
-                {pref.name}
-              </option>
+            <option value="">--Pick one--</option>
+            {prefectures.map(pref => (
+              <option key={pref.id} value={pref.id}>{pref.name}</option>
             ))}
           </select>
           {errors.pref && <p style={{ color: 'red' }}>{errors.pref}</p>}

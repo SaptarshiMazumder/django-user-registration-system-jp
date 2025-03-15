@@ -19,8 +19,14 @@ class UserSerializer(serializers.ModelSerializer):
                                                 RegexValidator(r'\d', "Password must contain at least one digit.")
         ])
     password_confirm = serializers.CharField(write_only=True)
-    tel = serializers.CharField(required=False, allow_blank=True, validators=[RegexValidator(r'^\d*$', "Telephone number must contain digits only.")])
-    pref = serializers.PrimaryKeyRelatedField(queryset=Pref.objects.all(), required=False, allow_null=True, read_only=False)
+    tel = serializers.CharField(required=False, 
+                                allow_blank=True, 
+                                validators=[RegexValidator(r'^\d*$', "Telephone number must contain digits only.")])
+    
+    pref = serializers.PrimaryKeyRelatedField(queryset=Pref.objects.all(), 
+                                              required=False, 
+                                              allow_null=True, 
+                                              read_only=False)
     class Meta:
         model = User
         fields = ['username', 'email', 'password',
@@ -32,4 +38,6 @@ class UserSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if data['password'] != data['password_confirm']:
             raise serializers.ValidationError({"password_confirm": "Passwords do not match."})
+        if(User.objects.filter(email = data['email']).exists()):
+            raise serializers.ValidationError({"email": "Email address is already registered."})
         return data
