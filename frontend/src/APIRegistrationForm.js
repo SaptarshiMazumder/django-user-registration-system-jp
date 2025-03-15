@@ -13,13 +13,13 @@ function APIRegistrationForm() {
     const [errMsg, setErrMsg] = useState('')
     const [prefs, setPrefs] = useState([])
     useEffect(() => {
-        const fetchPrefs = async () => {
+        const fetchPrefectures = async () => {
             const response = await fetch('http://127.0.0.1:8000/api/auth/prefs/');
             const data = await response.json();
             setPrefs(data);
         
         }
-        fetchPrefs();
+        fetchPrefectures();
     }, []);
     const handleFormDataChange = (e) => {
                 const {name, value} = e.target;
@@ -28,9 +28,6 @@ function APIRegistrationForm() {
                     [name]: value
                 });
             }
-    
-        
-
         const handleSubmit = async (e) => {
             e.preventDefault();
             setSuccessMsg('');
@@ -91,7 +88,6 @@ function APIRegistrationForm() {
         </div>
     );
 
-    
     
 }
 

@@ -1,5 +1,3 @@
-// frontend/src/RegistrationForm.js
-
 import React, { useState, useEffect } from 'react';
 
 function RegistrationForm() {
@@ -12,7 +10,7 @@ function RegistrationForm() {
     tel: '',
     pref: null,
   });
-  // Error messages
+
   const [errors, setErrors] = useState({});
   const [prefectures, setPrefectures] = useState([]);
 
@@ -31,26 +29,17 @@ function RegistrationForm() {
     fetchPrefectures();
   }, []);
 
-  useEffect(() => {
-  }, [formData]);
-
-  
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleSubmit = async (e) => {
   e.preventDefault();
-
-  // Only submit if no client-side errors
-  if (Object.keys(errors).length === 0) {
     try {
       const response = await fetch('http://127.0.0.1:8000/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData), // formData includes username, email, etc.
+        body: JSON.stringify(formData), 
       });
       const result = await response.json();
 
@@ -66,9 +55,7 @@ function RegistrationForm() {
     } catch (error) {
       console.error('Network or server error:', error);
     }
-  } else {
-    alert('Please fix the errors before submitting.');
-  }
+  
 };
 
   return (
