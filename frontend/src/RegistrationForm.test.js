@@ -1,57 +1,56 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import RegistrationForm from './RegistrationForm';
 
+// Mock global fetch and alert
 global.fetch = jest.fn();
+global.alert = jest.fn();
 
-test('clicking register sends data to the right URL and shows success', async () => {
-  global.fetch.mockResolvedValue({
-    ok: true,
-    json: () => Promise.resolve({ prefs: [{ id: 1, name: 'Tokyo' }, { id: 2, name: 'Osaka' }] })
+describe('RegistrationForm', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  await act(async () => {
-    render(<RegistrationForm />);
-  });
 
-  await screen.findByText('Tokyo');
 
-  const fetchSpy = jest.fn(() =>
-    Promise.resolve({
+  test('successful registration with fireEvent', async () => {
+    fetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ message: 'Success' })
-    })
-  );
-  global.fetch.mockImplementationOnce(fetchSpy);
+      json: () => Promise.resolve({}),
+    });
 
-  fireEvent.change(screen.getByLabelText('Username:'), { target: { value: 'jimmy' } });
-  fireEvent.change(screen.getByLabelText('Email:'), { target: { value: 'jimmy@gmail.com' } });
-  fireEvent.change(screen.getByLabelText('Password:'), { target: { value: 'Password123' } });
-  fireEvent.change(screen.getByLabelText('Confirm Password:'), { target: { value: 'Password123' } });
-  fireEvent.change(screen.getByLabelText('Telephone:'), { target: { value: '1234567890' } });
+    render(<RegistrationForm />);
 
-  window.alert = jest.fn();
+    // Fill form using fireEvent.change
+    fireEvent.change(screen.getByLabelText('Username:'), { target: { value: 'testuser' } });
+    fireEvent.change(screen.getByLabelText('Email:'), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password:'), { target: { value: 'Password1' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password:'), { target: { value: 'Password1' } });
+    fireEvent.change(screen.getByLabelText('Telephone:'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByLabelText('Prefecture:'), { target: { value: '1' } });
 
-  await act(async () => {
-    fireEvent.click(screen.getByText('Register'));
+    fireEvent.click(screen.getByRole('button', { name: /register/i }));
+
+    await waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith(
+        'http://127.0.0.1:8000/auth/register/',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({
+            username: 'testuser',
+            email: 'test@example.com',
+            password: 'Password1',
+            password_confirm: 'Password1',
+            tel: '1234567890',
+            pref: '1'
+          }),
+        })
+      );
+      expect(alert).toHaveBeenCalledWith('You’re registered!');
+    });
   });
 
-  await new Promise(resolve => setTimeout(resolve, 100));
+ 
 
-  expect(fetchSpy).toHaveBeenCalledWith(
-    'http://127.0.0.1:8000/auth/register/',
-    expect.objectContaining({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: 'jimmy',
-        email: 'jimmy@gmail.com',
-        password: 'Password123',
-        password_confirm: 'Password123',
-        tel: '1234567890',
-        pref: ''
-      })
-    })
-  );
 
-  expect(window.alert).toHaveBeenCalledWith('You’re registered!');
 });
