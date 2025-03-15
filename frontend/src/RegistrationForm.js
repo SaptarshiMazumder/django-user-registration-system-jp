@@ -12,33 +12,33 @@ function RegistrationForm() {
   });
 
   const [errors, setErrors] = useState({});
-  const [prefectures, setPrefectures] = useState([]);
+  const [prefs, setPrefs] = useState([]);
   const [touched, setTouched] = useState({}); // Track what’s been typed in
 
-  // Grab prefectures from the backend
+  // Grab prefs from the backend
   useEffect(() => {
-    async function getPrefectures() {
+    async function getPrefs() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/auth/prefectures/');
+        const response = await fetch('http://127.0.0.1:8000/auth/prefs/');
         const data = await response.json();
-        setPrefectures(data.prefectures);
+        setPrefs(data.prefs);
       } catch (err) {
-        console.log('Couldn’t get prefectures:', err);
+        console.log('Couldn’t fetch prefectures:', err);
       }
     }
-    getPrefectures();
+    getPrefs();
   }, []);
 
   // Handle input changes
-  const handleChange = (e) => {
+  const handleFormDataChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setTouched({ ...touched, [name]: true }); // Mark field as touched
-    checkErrors(name, value); // Validate just this field
+    validateField(name, value); // Validate just this field
   };
 
   // Check errors for a specific field
-  const checkErrors = (field, value) => {
+  const validateField = (field, value) => {
     let newErrors = { ...errors };
 
     if (field === 'username' && touched.username && value.trim().length < 3) {
@@ -48,14 +48,14 @@ function RegistrationForm() {
     }
 
     if (field === 'email' && touched.email && !/\S+@\S+\.\S+/.test(value)) {
-      newErrors.email = 'That’s not a real email.';
+      newErrors.email = 'That’s not a valid email.';
     } else if (field === 'email') {
       delete newErrors.email;
     }
 
     if (field === 'password' && touched.password) {
       if (value.length < 8) {
-        newErrors.password = 'Password’s too short, needs 8 characters.';
+        newErrors.password = 'Password must be at least 8 characters.';
       } else if (!/[a-z]/.test(value)) {
         newErrors.password = 'Add a lowercase letter.';
       } else if (!/[A-Z]/.test(value)) {
@@ -74,16 +74,12 @@ function RegistrationForm() {
     }
 
     if (field === 'tel' && touched.tel && value && !/^\d+$/.test(value)) {
-      newErrors.tel = 'Phone should be just numbers.';
+      newErrors.tel = 'Phone number should be just numbers.';
     } else if (field === 'tel') {
       delete newErrors.tel;
     }
 
-    if (field === 'pref' && touched.pref && !value) {
-      newErrors.pref = 'Pick a prefecture.';
-    } else if (field === 'pref') {
-      delete newErrors.pref;
-    }
+  
 
     setErrors(newErrors);
   };
@@ -103,11 +99,11 @@ function RegistrationForm() {
     });
 
     // Run validation on everything
-    Object.keys(formData).forEach((key) => checkErrors(key, formData[key]));
+    Object.keys(formData).forEach((key) => validateField(key, formData[key]));
 
     // If there’s errors, stop here
     if (Object.keys(errors).length > 0) {
-      alert('Fix the errors first!');
+      alert('The form has some errors.');
       return;
     }
 
@@ -139,7 +135,7 @@ function RegistrationForm() {
             type="text"
             name="username"
             value={formData.username}
-            onChange={handleChange}
+            onChange={handleFormDataChange}
           />
           {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
         </div>
@@ -150,7 +146,7 @@ function RegistrationForm() {
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={handleFormDataChange}
           />
           {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
         </div>
@@ -161,7 +157,7 @@ function RegistrationForm() {
             type="password"
             name="password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={handleFormDataChange}
           />
           {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
         </div>
@@ -172,7 +168,7 @@ function RegistrationForm() {
             type="password"
             name="password_confirm"
             value={formData.password_confirm}
-            onChange={handleChange}
+            onChange={handleFormDataChange}
           />
           {errors.password_confirm && <p style={{ color: 'red' }}>{errors.password_confirm}</p>}
         </div>
@@ -183,7 +179,7 @@ function RegistrationForm() {
             type="text"
             name="tel"
             value={formData.tel}
-            onChange={handleChange}
+            onChange={handleFormDataChange}
           />
           {errors.tel && <p style={{ color: 'red' }}>{errors.tel}</p>}
         </div>
@@ -193,10 +189,10 @@ function RegistrationForm() {
           <select
             name="pref"
             value={formData.pref}
-            onChange={handleChange}
+            onChange={handleFormDataChange}
           >
             <option value="">--Pick one--</option>
-            {prefectures.map(pref => (
+            {prefs.map(pref => (
               <option key={pref.id} value={pref.id}>{pref.name}</option>
             ))}
           </select>
