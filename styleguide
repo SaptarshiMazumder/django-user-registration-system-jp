@@ -1,0 +1,70 @@
+# Style Guide
+
+Here's a quick guide to how we generally structure our code. It's here to help keep things consistent.
+
+## General
+
+- **Indentation:** Use 2 spaces for JavaScript, and 4 for Python.
+- **Line Length:** Aim to keep lines under 120 characters where possible.
+- **File Naming:** Choose descriptive names so it's clear what each file contains.
+
+## MVT (Model-View-Template) Architecture
+
+We use MVT, which is similar to MVC but with a Django flavor.
+
+- **Model:** This is where we define our data structures. See `models.py` for the Django models.
+- **View:** Handles the application logic. Look in `views.py` and `api_views.py`.
+- **Template:** This is the HTML presentation layer, located in the `templates/` directory.
+
+## JavaScript (Frontend)
+
+- **Naming**:
+  - Variables and functions: use camelCase (e.g., `userName` or `getUserData`).
+  - Components: Use PascalCase (e.g., `UserProfile` or `LoginForm`).
+- **Comments**:
+  - Add comments to explain complex or unclear code.
+- **State**:
+  - `useState` is useful for managing component data.
+- **Forms**:
+  - Use clear names for form fields (e.g., `email` for email inputs).
+  - Implement validation and display error messages.
+- **Fetching Data**:
+  - `useEffect` is helpful for loading data from APIs when components mount.
+
+## Python (Backend - Django REST Framework)
+
+- **Naming Conventions:**
+  - Variables and functions: snake_case (e.g., `user_id`, `save_user`).
+  - Classes: PascalCase (e.g., `UserSerializer`, `UserRegistrationAPIView`).
+- **Comments:**
+  - Use docstrings to explain the purpose of classes and functions.
+- **Serializers:**
+  - Serializers handle data serialization and deserialization.
+  - Define fields in the `Meta` class.
+  - Use validators for data integrity.
+- **Views:**
+  - API views handle API requests.
+  - Use `get` and `post` methods for different HTTP methods.
+  - Use serializers to validate request data.
+- **Forms:**
+  - Django forms handle user input.
+  - Define fields with labels and validators.
+  - Use the `clean` method for custom validation logic.
+
+## Folder Structure
+
+Our project has a standard structure.
+
+- `tg_assignment/`: Main Django project directory.
+- `users/`: User management application.
+- `frontend/`: React frontend code.
+
+## Django Guidelines
+
+- **Settings:** Store settings in `tg_assignment/settings.py`.
+- **URLs:** Define URL patterns in `tg_assignment/urls.py` and app-specific `urls.py` files.
+- **Models:** Data models are defined in `models.py`.
+- **Views:** Views handle requests and responses.
+- **Templates:** HTML templates are located in `templates/`.
+- **Forms:** Use Django forms for user input and validation.
+- **Serializers:** Use serializers for API data handling.

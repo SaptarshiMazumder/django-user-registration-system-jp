@@ -50,7 +50,64 @@ describe('RegistrationForm', () => {
     });
   });
 
- 
+ test('shows error for existing username', async () => {
+  // Mock failed response with username error
+  fetch.mockResolvedValueOnce({
+    ok: false,
+    json: () => Promise.resolve({ 
+      
+    }),
+  });
+
+  render(<RegistrationForm />);
+
+  // Fill form with valid data that will conflict on server
+  fireEvent.change(screen.getByLabelText('Username:'), { 
+    target: { value: 'picolo' } 
+  });
+  fireEvent.change(screen.getByLabelText('Email:'), { 
+    target: { value: 'new@example.com' } 
+  });
+  fireEvent.change(screen.getByLabelText('Password:'), { 
+    target: { value: 'SecurePass1' } 
+  });
+  fireEvent.change(screen.getByLabelText('Confirm Password:'), { 
+    target: { value: 'SecurePass1' } 
+  });
+  fireEvent.change(screen.getByLabelText('Telephone:'), { 
+    target: { value: '0987654321' } 
+  });
+  fireEvent.change(screen.getByLabelText('Prefecture:'), { 
+    target: { value: '2' }  // Osaka
+  });
+
+  fireEvent.click(screen.getByRole('button', { name: /register/i }));
+
+  await waitFor(() => {
+    // Verify the API call was made
+    expect(fetch).toHaveBeenCalledWith(
+      'http://127.0.0.1:8000/auth/register/',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          username: 'picolo',
+          email: 'new@example.com',
+          password: 'SecurePass1',
+          password_confirm: 'SecurePass1',
+          tel: '0987654321',
+          pref: '2'
+        }),
+      })
+    );
+
+    // Verify error alert shows server message
+    expect(alert).toHaveBeenCalledWith(
+      expect.stringContaining('Something went wrong:')
+    );
+  });
+});
+
+
 
 
 });
