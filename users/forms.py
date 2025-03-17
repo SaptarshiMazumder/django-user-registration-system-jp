@@ -56,9 +56,12 @@ class UserRegistrationForm(forms.ModelForm):
 
         
         if User.objects.filter(email=email).exists():
+            self.add_error('email', 'Email address is already registered.')
             raise ValidationError('Email address is already registered.')
 
         if password and password_confirm and password != password_confirm:
+            self.add_error('password_confirm', 'Passwords do not match')
+
             raise ValidationError('Passwords do not match')
 
         return cleaned_data
