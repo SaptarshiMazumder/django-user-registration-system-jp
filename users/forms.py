@@ -7,20 +7,20 @@ from .models import User, Pref
 
 class UserRegistrationForm(forms.ModelForm):
     username = forms.CharField(
-        label="Username",
+        label="ユーザー名",
         validators=[
             MinLengthValidator(3, "Username must be at least 3 characters long.")
         ]
     )
     email = forms.CharField(
-        label="Email",
+        label="メールアドレス",
         validators=[
             EmailValidator("Enter a valid email address.")
         ]
     )
     password = forms.CharField(
         widget=forms.PasswordInput,
-        label="Password",
+        label="パスワード",
         validators=[
             MinLengthValidator(8, "Password must be at least 8 characters long."),
             RegexValidator(r'[A-Z]', "Password must contain at least one uppercase letter."),
@@ -29,9 +29,9 @@ class UserRegistrationForm(forms.ModelForm):
         ]
     )
     password_confirm = forms.CharField(widget=forms.PasswordInput,
-                                       label= 'Confirm Password')
+                                       label= 'パスワード確認')
     tel = forms.CharField(
-        label="Telephone",
+        label="電話番号",
         required=False,
         validators=[
             RegexValidator(r'^\d*$', "Telephone number must contain digits only.")
@@ -39,7 +39,7 @@ class UserRegistrationForm(forms.ModelForm):
     )
     pref = forms.ModelChoiceField(
         queryset=Pref.objects.all(),
-        label="Prefecture",
+        label="都道府県",
         required=False
     )
 

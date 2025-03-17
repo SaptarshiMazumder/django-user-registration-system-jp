@@ -5,10 +5,10 @@
   </head>
 
   <body>
-    <h1>Register a New Account</h1>
+    <h1>新しいアカウントを登録する</h1>
     <form method="post">
       {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Register</button>
+      <button type="submit">登録</button>
     </form>
     {% if form.errors %}
     <ul style="color: red">

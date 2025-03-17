@@ -67,7 +67,7 @@ class RegistrationViewTest(TestCase):
     def test_get_registration_page(self):
         response = self.client.get(reverse('register'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Register a New Account")
+        self.assertContains(response, "新しいアカウントを登録する")
 
     def test_successful_registration(self):
         form_data = {
