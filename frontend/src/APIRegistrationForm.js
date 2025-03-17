@@ -129,7 +129,7 @@ function APIRegistrationForm() {
         });
       } else {
         const errorData = await response.json();
-        setErrMsg('Oops, something broke: ' + JSON.stringify(errorData));
+        setErrMsg('There was an error: ' + JSON.stringify(errorData));
       }
     } catch (err) {
       setErrMsg('Something went wrong with the server.');

@@ -11,23 +11,32 @@ function RegistrationForm() {
     pref: ''
   });
 
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errMsg, setErrMsg] = useState('');
   const [errors, setErrors] = useState({});
-  const [prefs, setPrefs] = useState([{ id: 1, name: 'Tokyo' }, { id: 2, name: 'Osaka' }]);
-  const [touched, setTouched] = useState({}); // Track what’s been typed in
+  const [prefs, setPrefs] = useState([]);
+  const [touched, setTouched] = useState({});
 
   // Grab prefs from the backend
-  // useEffect(() => {
-  //   async function getPrefs() {
-  //     try {
-  //       const response = await fetch('http://127.0.0.1:8000/auth/prefs/');
-  //       const data = await response.json();
-  //       setPrefs(data.prefs);
-  //     } catch (err) {
-  //       console.log('Couldn’t fetch prefectures:', err);
-  //     }
-  //   }
-  //   getPrefs();
-  // }, []);
+  useEffect(() => {
+   async function getPrefs() {
+      try {
+        let data;
+        if(global.prefs){
+          data = {prefectures: global.prefs}
+        }
+        else{
+          const response = await fetch('http://127.0.0.1:8000/auth/prefectures/');
+          data = await response.json();
+        }
+        setPrefs(data.prefectures || [] ); // Ensure prefs is always an array
+      } catch (err) {
+        console.error('Couldn’t fetch prefectures:', err);
+        setPrefs([]); // Ensure prefs is an empty array in case of error
+      }
+    }
+    getPrefs();
+  }, []);
 
   // Handle input changes
   const handleFormDataChange = (e) => {
@@ -87,7 +96,8 @@ function RegistrationForm() {
   // Submit the form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setSuccessMsg('');
+    setErrMsg('');
     // Mark all fields as touched to show errors if they’re empty
     setTouched({
       username: true,
@@ -116,11 +126,14 @@ function RegistrationForm() {
       const result = await response.json();
 
       if (response.ok) {
+        setSuccessMsg('User signed up!');
         alert('You’re registered!');
       } else {
+        setErrMsg('There was an error: ' + JSON.stringify(result.errors));
         alert('Something went wrong: ' + JSON.stringify(result.errors));
       }
     } catch (err) {
+      setErrMsg('Something went wrong with the server.');
       console.log('Submit failed:', err);
     }
   };
@@ -207,6 +220,8 @@ function RegistrationForm() {
 
         <button type="submit">Register</button>
       </form>
+      {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
+      {errMsg && <p style={{ color: 'red' }}>{errMsg}</p>}
     </div>
   );
 }
