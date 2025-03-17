@@ -2,10 +2,8 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
-from django.contrib.auth import get_user_model
-from .models import Pref
+from ...models import Pref, User
 
-User = get_user_model()
 
 class PrefAPIViewTest(APITestCase):
 

@@ -1,17 +1,17 @@
 from rest_framework.views import APIView
-from .serializers import UserSerializer
+from .serializers import PrefSerializer, UserSerializer
 from rest_framework.response import Response
-from .models import Pref
+from ... import models
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
-from .serializers import UserSerializer, PrefSerializer
 from rest_framework.response import Response
+
 
 User = get_user_model()
 
 class PrefAPIView(APIView):
     def get(self, request):
-        prefs = Pref.objects.all()
+        prefs = models.Pref.objects.all()
         serializer =   PrefSerializer(prefs, many=True)
         return Response(serializer.data)
 

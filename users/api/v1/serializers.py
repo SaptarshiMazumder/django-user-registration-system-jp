@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Pref
+from ... import models
 from django.core.validators import MinLengthValidator, RegexValidator
 
 User = get_user_model()
 
 class PrefSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Pref
+        model = models.Pref
         fields = ['id', 'name']
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
                                 allow_blank=True, 
                                 validators=[RegexValidator(r'^\d*$', "Telephone number must contain digits only.")])
     
-    pref = serializers.PrimaryKeyRelatedField(queryset=Pref.objects.all(), 
+    pref = serializers.PrimaryKeyRelatedField(queryset=models.Pref.objects.all(), 
                                               required=False, 
                                               allow_null=True, 
                                               read_only=False)
