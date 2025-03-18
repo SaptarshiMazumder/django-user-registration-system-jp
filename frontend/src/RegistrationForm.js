@@ -140,10 +140,10 @@ function RegistrationForm() {
 
   return (
     <div>
-      <h1>Registration Form</h1>
+      <h1>登録フォーム</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">ユーザー名:</label>
           <input
             type="text"
             id="username"
@@ -155,7 +155,7 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">メールアドレス:</label>
           <input
             type="email"
             id="email"
@@ -167,7 +167,7 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">パスワード:</label>
           <input
             type="password"
             id="password"
@@ -179,7 +179,7 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label htmlFor="password_confirm">Confirm Password:</label>
+          <label htmlFor="password_confirm">パスワード確認:</label>
           <input
             type="password"
             id="password_confirm"
@@ -191,7 +191,7 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label htmlFor="tel">Telephone:</label>
+          <label htmlFor="tel">電話番号:</label>
           <input
             type="text"
             id="tel"
@@ -203,14 +203,14 @@ function RegistrationForm() {
         </div>
 
         <div>
-          <label htmlFor="pref">Prefecture:</label>
+          <label htmlFor="pref">都道府県:</label>
           <select
             id="pref"
             name="pref"
             value={formData.pref}
             onChange={handleFormDataChange}
           >
-            <option value="">--Pick one--</option>
+            <option value="">-- 選択してください --</option>
             {prefs.map(pref => (
               <option key={pref.id} value={pref.id}>{pref.name}</option>
             ))}
@@ -218,7 +218,7 @@ function RegistrationForm() {
           {errors.pref && <p style={{ color: 'red' }}>{errors.pref}</p>}
         </div>
 
-        <button type="submit">Register</button>
+        <button type="submit">登録</button>
       </form>
       {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
       {errMsg && <p style={{ color: 'red' }}>{errMsg}</p>}

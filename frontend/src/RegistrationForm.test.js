@@ -22,14 +22,14 @@ describe('RegistrationForm', () => {
 
     render(<RegistrationForm />);
 
-    fireEvent.change(screen.getByLabelText('Username:'), { target: { value: 'testuser' } });
-    fireEvent.change(screen.getByLabelText('Email:'), { target: { value: 'test@example.com' } });
-    fireEvent.change(screen.getByLabelText('Password:'), { target: { value: 'Password1' } });
-    fireEvent.change(screen.getByLabelText('Confirm Password:'), { target: { value: 'Password1' } });
-    fireEvent.change(screen.getByLabelText('Telephone:'), { target: { value: '1234567890' } });
-    fireEvent.change(screen.getByLabelText('Prefecture:'), { target: { value: '1' } });
+    fireEvent.change(screen.getByLabelText('ユーザー名:'), { target: { value: 'testuser' } });
+    fireEvent.change(screen.getByLabelText('メールアドレス:'), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText('パスワード:'), { target: { value: 'Password1' } });
+    fireEvent.change(screen.getByLabelText('パスワード確認:'), { target: { value: 'Password1' } });
+    fireEvent.change(screen.getByLabelText('電話番号:'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByLabelText('都道府県:'), { target: { value: '1' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /register/i }));
+    fireEvent.click(screen.getByRole('button', { name: /登録/i }));
 
     await waitFor(() => {
       expect(alert).toHaveBeenCalledWith('You’re registered!');
@@ -49,33 +49,33 @@ test('shows error for existing username', async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
       json: () => Promise.resolve({
-        username: ['A user with that username already exists'],
+        ユーザー名: ['A user with that username already exists'],
       }),
     });
 
     render(<RegistrationForm />);
 
     
-    fireEvent.change(screen.getByLabelText('Username:'), {
+    fireEvent.change(screen.getByLabelText('ユーザー名:'), {
       target: { value: 'picolo' },
     });
-    fireEvent.change(screen.getByLabelText('Email:'), {
+    fireEvent.change(screen.getByLabelText('メールアドレス:'), {
       target: { value: 'new@example.com' },
     });
-    fireEvent.change(screen.getByLabelText('Password:'), {
+    fireEvent.change(screen.getByLabelText('パスワード:'), {
       target: { value: 'SecurePass1' },
     });
-    fireEvent.change(screen.getByLabelText('Confirm Password:'), {
+    fireEvent.change(screen.getByLabelText('パスワード確認:'), {
       target: { value: 'SecurePass1' },
     });
-    fireEvent.change(screen.getByLabelText('Telephone:'), {
+    fireEvent.change(screen.getByLabelText('電話番号:'), {
       target: { value: '0987654321' },
     });
-    fireEvent.change(screen.getByLabelText('Prefecture:'), {
+    fireEvent.change(screen.getByLabelText('都道府県:'), {
       target: { value: '2' }, // Osaka
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /register/i }));
+    fireEvent.click(screen.getByRole('button', { name: /登録/i }));
 
     await waitFor(() => {
       
@@ -104,26 +104,26 @@ test('shows error for existing email', async () => {
     render(<RegistrationForm />);
 
     
-    fireEvent.change(screen.getByLabelText('Username:'), {
+    fireEvent.change(screen.getByLabelText('ユーザー名:'), {
       target: { value: 'picolo' },
     });
-    fireEvent.change(screen.getByLabelText('Email:'), {
+    fireEvent.change(screen.getByLabelText('メールアドレス:'), {
       target: { value: 'new@example.com' },
     });
-    fireEvent.change(screen.getByLabelText('Password:'), {
+    fireEvent.change(screen.getByLabelText('パスワード:'), {
       target: { value: 'SecurePass1' },
     });
-    fireEvent.change(screen.getByLabelText('Confirm Password:'), {
+    fireEvent.change(screen.getByLabelText('パスワード確認:'), {
       target: { value: 'SecurePass1' },
     });
-    fireEvent.change(screen.getByLabelText('Telephone:'), {
+    fireEvent.change(screen.getByLabelText('電話番号:'), {
       target: { value: '0987654321' },
     });
-    fireEvent.change(screen.getByLabelText('Prefecture:'), {
+    fireEvent.change(screen.getByLabelText('都道府県:'), {
       target: { value: '2' }, // Osaka
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /register/i }));
+    fireEvent.click(screen.getByRole('button', { name: /登録/i }));
 
     await waitFor(() => {
       
@@ -152,26 +152,26 @@ test('shows error for existing email', async () => {
     render(<RegistrationForm />);
 
     
-    fireEvent.change(screen.getByLabelText('Username:'), {
+    fireEvent.change(screen.getByLabelText('ユーザー名:'), {
       target: { value: 'picolo' },
     });
-    fireEvent.change(screen.getByLabelText('Email:'), {
+    fireEvent.change(screen.getByLabelText('メールアドレス:'), {
       target: { value: 'new@example.com' },
     });
-    fireEvent.change(screen.getByLabelText('Password:'), {
+    fireEvent.change(screen.getByLabelText('パスワード:'), {
       target: { value: 'SecurePass1' },
     });
-    fireEvent.change(screen.getByLabelText('Confirm Password:'), {
+    fireEvent.change(screen.getByLabelText('パスワード確認:'), {
       target: { value: 'SecurePass1' },
     });
-    fireEvent.change(screen.getByLabelText('Telephone:'), {
+    fireEvent.change(screen.getByLabelText('電話番号:'), {
       target: { value: 'y7trwfggffg' },
     });
-    fireEvent.change(screen.getByLabelText('Prefecture:'), {
+    fireEvent.change(screen.getByLabelText('都道府県:'), {
       target: { value: '2' }, // Osaka
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /register/i }));
+    fireEvent.click(screen.getByRole('button', { name: /登録/i }));
 
     await waitFor(() => {
       
