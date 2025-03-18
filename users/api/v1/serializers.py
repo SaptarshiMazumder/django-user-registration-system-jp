@@ -11,21 +11,25 @@ class PrefSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(validators=[MinLengthValidator(3)])
-    email = serializers.EmailField()
+    username = serializers.CharField(validators=[MinLengthValidator(3)], error_messages={'required': 'ユーザー名は必須です。'})
+    email = serializers.EmailField(error_messages={
+                                        'required': 'メールアドレスは必須です。',
+                                        'blank': 'メールアドレスは必須です。'
+                                    })
+
     password = serializers.CharField(validators=[MinLengthValidator(8, "Password must be at least 8 characters long."),
-                                                RegexValidator(r'[A-Z]', "Password must contain at least one uppercase letter."),
-                                                RegexValidator(r'[a-z]', "Password must contain at least one lowercase letter."),
-                                                RegexValidator(r'\d', "Password must contain at least one digit.")
-        ])
+                                                RegexValidator(r'[A-Z]', "パスワードには少なくとも1つの大文字を含める必要があります。"),
+                                                RegexValidator(r'[a-z]', "パスワードには少なくとも1つの小文字を含める必要があります。"),
+                                                RegexValidator(r'\d', "パスワードには少なくとも1つの数字を含める必要があります。")
+        ], error_messages={'required': 'パスワードは必須です。'})
     password_confirm = serializers.CharField(write_only=True)
-    tel = serializers.CharField(required=False, 
-                                allow_blank=True, 
-                                validators=[RegexValidator(r'^\d*$', "Telephone number must contain digits only.")])
-    
-    pref = serializers.PrimaryKeyRelatedField(queryset=models.Pref.objects.all(), 
-                                              required=False, 
-                                              allow_null=True, 
+    tel = serializers.CharField(required=False,
+                                allow_blank=True,
+                                validators=[RegexValidator(r'^\d*$', "電話番号は数字のみを含める必要があります。")])
+
+    pref = serializers.PrimaryKeyRelatedField(queryset=models.Pref.objects.all(),
+                                              required=False,
+                                              allow_null=True,
                                               read_only=False)
     class Meta:
         model = User
@@ -37,9 +41,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['password'] != data['password_confirm']:
-            raise serializers.ValidationError({"password_confirm": "Passwords do not match."})
+            raise serializers.ValidationError({"password_confirm": "パスワードが一致しません。"})
         if (User.objects.filter(username = data['username']).exists()):
-            raise serializers.ValidationError({"username": "A user with that username already exists."})
+            raise serializers.ValidationError({"username": "そのユーザー名のユーザーはすでに存在します。"})
         if(User.objects.filter(email = data['email']).exists()):
-            raise serializers.ValidationError({"email": "Email address is already registered."})
+            raise serializers.ValidationError({"email": "メールアドレスはすでに登録されています。"})
         return data

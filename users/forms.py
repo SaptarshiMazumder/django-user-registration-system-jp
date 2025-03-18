@@ -9,32 +9,36 @@ class UserRegistrationForm(forms.ModelForm):
     username = forms.CharField(
         label="ユーザー名",
         validators=[
-            MinLengthValidator(3, "Username must be at least 3 characters long.")
-        ]
+            MinLengthValidator(3, "ユーザー名は3文字以上で入力してください。")
+        ],
+        error_messages={'required': 'ユーザー名は必須です。'}
     )
     email = forms.CharField(
         label="メールアドレス",
         validators=[
-            EmailValidator("Enter a valid email address.")
-        ]
+            EmailValidator("有効なメールアドレスを入力してください。")
+        ],
+        error_messages={'required': 'メールアドレスは必須です。'}
     )
     password = forms.CharField(
         widget=forms.PasswordInput,
         label="パスワード",
         validators=[
-            MinLengthValidator(8, "Password must be at least 8 characters long."),
-            RegexValidator(r'[A-Z]', "Password must contain at least one uppercase letter."),
-            RegexValidator(r'[a-z]', "Password must contain at least one lowercase letter."),
-            RegexValidator(r'\d', "Password must contain at least one digit.")
-        ]
+            MinLengthValidator(8, "パスワードは8文字以上で入力してください。"),
+            RegexValidator(r'[A-Z]', "パスワードには大文字を1文字以上含めてください。"),
+            RegexValidator(r'[a-z]', "パスワードには小文字を1文字以上含めてください。"),
+            RegexValidator(r'\d', "パスワードには数字を1文字以上含めてください。")
+        ],
+        error_messages={'required': 'パスワードは必須です。'}
     )
     password_confirm = forms.CharField(widget=forms.PasswordInput,
-                                       label= 'パスワード確認')
+                                       label= 'パスワード確認',
+                                       error_messages={'required': 'パスワード確認は必須です。'})
     tel = forms.CharField(
         label="電話番号",
         required=False,
         validators=[
-            RegexValidator(r'^\d*$', "Telephone number must contain digits only.")
+            RegexValidator(r'^\d*$', "電話番号は数字のみで入力してください。")
         ]
     )
     pref = forms.ModelChoiceField(
@@ -54,14 +58,14 @@ class UserRegistrationForm(forms.ModelForm):
         password = cleaned_data.get('password')
         password_confirm = cleaned_data.get('password_confirm')
 
+        if User.objects.filter(username=cleaned_data.get('username')).exists():
+            self.add_error('username', 'そのユーザー名のユーザーはすでに存在します。')
         
         if User.objects.filter(email=email).exists():
-            self.add_error('email', 'Email address is already registered.')
-            raise ValidationError('Email address is already registered.')
+            self.add_error('email', 'このメールアドレスは既に登録されています。')
 
         if password and password_confirm and password != password_confirm:
-            self.add_error('password_confirm', 'Passwords do not match')
+            self.add_error('password_confirm', 'パスワードが一致しません')
 
-            raise ValidationError('Passwords do not match')
 
         return cleaned_data

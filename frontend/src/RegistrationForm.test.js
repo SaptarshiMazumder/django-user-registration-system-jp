@@ -49,7 +49,7 @@ test('shows error for existing username', async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
       json: () => Promise.resolve({
-        ユーザー名: ['A user with that username already exists'],
+        ユーザー名: ['そのユーザー名を持つユーザーは既に存在します'],
       }),
     });
 
@@ -97,7 +97,7 @@ test('shows error for existing email', async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
       json: () => Promise.resolve({
-        email: ['Email address is already registered.'],
+        email: ['このメールアドレスは既に登録されています。'],
       }),
     });
 
@@ -145,7 +145,7 @@ test('shows error for existing email', async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
       json: () => Promise.resolve({
-        phone: ['Phone number should be just numbers.'],
+      phone: ['電話番号は数字のみで入力してください。'],
       }),
     });
 
@@ -175,12 +175,9 @@ test('shows error for existing email', async () => {
 
     await waitFor(() => {
       
-      expect.stringContaining('Phone number should be just numbers.')
+    expect.stringContaining('電話番号は数字のみで入力してください。')
     });
   });
 
 
 });
-
-
-
