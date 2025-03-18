@@ -141,6 +141,7 @@ function RegistrationForm() {
   return (
     <div>
       <h1>登録フォーム</h1>
+      <p>これはユーザー登録フォームのフロントエンドです</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">ユーザー名:</label>

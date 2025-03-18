@@ -64,14 +64,14 @@ class UserRegistrationAPIViewTest(APITestCase):
 
     def test_duplicate_email(self):
         User.objects.create_user(
-            username='lelouch_v2',
+            username='lelouch_v1',
             email='zero@geass.com',
             password='CodeGeass01'
         )
 
         data = {
             'username': 'lelouch_v2',
-            'email': 'zero@geass.com',
+            'email': 'zero @geass.com',
             'password': 'CodeGeass01',
             'password_confirm': 'CodeGeass01',
             'tel': '1234567890',

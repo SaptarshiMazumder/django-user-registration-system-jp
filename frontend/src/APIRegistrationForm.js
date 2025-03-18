@@ -139,9 +139,10 @@ function APIRegistrationForm() {
 
   return (
     <div>
-      <h1>API Sign-Up Form</h1>
+      <h1>API登録フォーム</h1>
+      <p>これはDjango Rest APIのフロントエンドです。</p>
       <form onSubmit={handleSubmit}>
-        <label>Username</label>
+<label>ユーザー名</label>
         <input
           type="text"
           name="username"
@@ -150,7 +151,7 @@ function APIRegistrationForm() {
         />
         {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
 
-        <label>Email</label>
+<label>メールアドレス</label>
         <input
           type="email"
           name="email"
@@ -159,7 +160,7 @@ function APIRegistrationForm() {
         />
         {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
 
-        <label>Password</label>
+<label>パスワード</label>
         <input
           type="password"
           name="password"
@@ -168,7 +169,7 @@ function APIRegistrationForm() {
         />
         {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
 
-        <label>Confirm Password</label>
+<label>パスワード確認</label>
         <input
           type="password"
           name="password_confirm"
@@ -177,7 +178,7 @@ function APIRegistrationForm() {
         />
         {errors.password_confirm && <p style={{ color: 'red' }}>{errors.password_confirm}</p>}
 
-        <label>Telephone</label>
+<label>電話番号</label>
         <input
           type="tel"
           name="tel"
@@ -186,16 +187,16 @@ function APIRegistrationForm() {
         />
         {errors.tel && <p style={{ color: 'red' }}>{errors.tel}</p>}
 
-        <label>Prefecture</label>
+        <label>都道府県</label>
         <select name="pref" value={formData.pref} onChange={handleFormDataChange}>
-          <option value="">Choose one</option>
+          <option value="">-- 選択してください --</option>
           {prefs.map(pref => (
             <option key={pref.id} value={pref.id}>{pref.name}</option>
           ))}
         </select>
         {errors.pref && <p style={{ color: 'red' }}>{errors.pref}</p>}
 
-        <button type="submit">Sign Up</button>
+        <button type="submit">登録</button>
       </form>
       {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
       {errMsg && <p style={{ color: 'red' }}>{errMsg}</p>}
