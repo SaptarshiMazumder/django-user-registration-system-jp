@@ -20,7 +20,7 @@ function APIRegistrationForm() {
   useEffect(() => {
     async function getPrefs() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/auth/prefs/');
+        const response = await fetch('http://127.0.0.1:8000/api/v1/prefs/');
         const data = await response.json();
         setPrefs(data);
       } catch (err) {
@@ -43,39 +43,39 @@ function APIRegistrationForm() {
     let newErrors = { ...errors };
 
     if (name === 'username' && touched.username && value.trim().length < 3) {
-      newErrors.username = 'Username needs to be 3 characters or more.';
+      newErrors.username = 'ユーザー名は3文字以上である必要があります。';
     } else if (name === 'username') {
       delete newErrors.username;
     }
 
     if (name === 'email' && touched.email && !/\S+@\S+\.\S+/.test(value)) {
-      newErrors.email = 'That’s not a valid email.';
+      newErrors.email = '有効なメールアドレスではありません。';
     } else if (name === 'email') {
       delete newErrors.email;
     }
 
     if (name === 'password' && touched.password) {
       if (value.length < 8) {
-        newErrors.password = 'Password must be at least 8 characters.';
+        newErrors.password = 'パスワードは8文字以上である必要があります。';
       } else if (!/[a-z]/.test(value)) {
-        newErrors.password = 'Put in a lowercase letter.';
+        newErrors.password = '小文字を入力してください。';
       } else if (!/[A-Z]/.test(value)) {
-        newErrors.password = 'Needs an uppercase too.';
+        newErrors.password = '大文字も必要です。';
       } else if (!/\d/.test(value)) {
-        newErrors.password = 'Add a number.';
+        newErrors.password = '数字を追加してください。';
       } else {
         delete newErrors.password;
       }
     }
 
     if (name === 'password_confirm' && touched.password_confirm && value !== formData.password) {
-      newErrors.password_confirm = 'Passwords don’t match.';
+      newErrors.password_confirm = 'パスワードが一致しません。';
     } else if (name === 'password_confirm') {
       delete newErrors.password_confirm;
     }
 
     if (name === 'tel' && touched.tel && value && !/^\d+$/.test(value)) {
-      newErrors.tel = 'Phone number should be just numbers.';
+      newErrors.tel = '電話番号は数字のみで入力してください。';
     } else if (name === 'tel') {
       delete newErrors.tel;
     }
@@ -106,7 +106,7 @@ function APIRegistrationForm() {
 
     // Stop if there’s errors
     if (Object.keys(errors).length > 0) {
-      setErrMsg('The form has some errors.');
+      setErrMsg('フォームにエラーがあります。');
       return;
     }
 
@@ -118,7 +118,7 @@ function APIRegistrationForm() {
       });
 
       if (response.ok) {
-        setSuccessMsg('User signed up!');
+        setSuccessMsg('登録が完了しました！');
         setFormData({
           username: '',
           email: '',
@@ -129,10 +129,10 @@ function APIRegistrationForm() {
         });
       } else {
         const errorData = await response.json();
-        setErrMsg('There was an error: ' + JSON.stringify(errorData));
+        setErrMsg('エラーが発生しました: ' + JSON.stringify(errorData));
       }
     } catch (err) {
-      setErrMsg('Something went wrong with the server.');
+      setErrMsg('サーバーで問題が発生しました。');
       console.log('Submit error:', err);
     }
   };
@@ -142,59 +142,71 @@ function APIRegistrationForm() {
       <h1>API登録フォーム</h1>
       <p>これはDjango Rest APIのフロントエンドです。</p>
       <form onSubmit={handleSubmit}>
-<label>ユーザー名</label>
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleFormDataChange}
-        />
-        {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+        <div>
+          <label>ユーザー名</label>
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleFormDataChange}
+          />
+          {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+        </div>
 
-<label>メールアドレス</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleFormDataChange}
-        />
-        {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+        <div>
+          <label>メールアドレス</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleFormDataChange}
+          />
+          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+        </div>
 
-<label>パスワード</label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleFormDataChange}
-        />
-        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+        <div>
+          <label>パスワード</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleFormDataChange}
+          />
+          {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+        </div>
 
-<label>パスワード確認</label>
-        <input
-          type="password"
-          name="password_confirm"
-          value={formData.password_confirm}
-          onChange={handleFormDataChange}
-        />
-        {errors.password_confirm && <p style={{ color: 'red' }}>{errors.password_confirm}</p>}
+        <div>
+          <label>パスワード確認</label>
+          <input
+            type="password"
+            name="password_confirm"
+            value={formData.password_confirm}
+            onChange={handleFormDataChange}
+          />
+          {errors.password_confirm && <p style={{ color: 'red' }}>{errors.password_confirm}</p>}
+        </div>
 
-<label>電話番号</label>
-        <input
-          type="tel"
-          name="tel"
-          value={formData.tel}
-          onChange={handleFormDataChange}
-        />
-        {errors.tel && <p style={{ color: 'red' }}>{errors.tel}</p>}
+        <div>
+          <label>電話番号</label>
+          <input
+            type="tel"
+            name="tel"
+            value={formData.tel}
+            onChange={handleFormDataChange}
+          />
+          {errors.tel && <p style={{ color: 'red' }}>{errors.tel}</p>}
+        </div>
 
-        <label>都道府県</label>
-        <select name="pref" value={formData.pref} onChange={handleFormDataChange}>
-          <option value="">-- 選択してください --</option>
-          {prefs.map(pref => (
-            <option key={pref.id} value={pref.id}>{pref.name}</option>
-          ))}
-        </select>
-        {errors.pref && <p style={{ color: 'red' }}>{errors.pref}</p>}
+        <div>
+          <label>都道府県</label>
+          <select name="pref" value={formData.pref} onChange={handleFormDataChange}>
+            <option value="">-- 選択してください --</option>
+            {prefs.map(pref => (
+              <option key={pref.id} value={pref.id}>{pref.name}</option>
+            ))}
+          </select>
+          {errors.pref && <p style={{ color: 'red' }}>{errors.pref}</p>}
+        </div>
 
         <button type="submit">登録</button>
       </form>

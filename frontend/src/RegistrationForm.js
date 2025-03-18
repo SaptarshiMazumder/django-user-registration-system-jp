@@ -51,39 +51,39 @@ function RegistrationForm() {
     let newErrors = { ...errors };
 
     if (field === 'username' && touched.username && value.trim().length < 3) {
-      newErrors.username = 'Username needs to be 3 characters or more.';
+      newErrors.username = 'ユーザー名は3文字以上である必要があります。';
     } else if (field === 'username') {
       delete newErrors.username;
     }
 
     if (field === 'email' && touched.email && !/\S+@\S+\.\S+/.test(value)) {
-      newErrors.email = 'That’s not a valid email.';
+      newErrors.email = '有効なメールアドレスではありません。';
     } else if (field === 'email') {
       delete newErrors.email;
     }
 
     if (field === 'password' && touched.password) {
       if (value.length < 8) {
-        newErrors.password = 'Password must be at least 8 characters.';
+        newErrors.password = 'パスワードは8文字以上である必要があります。';
       } else if (!/[a-z]/.test(value)) {
-        newErrors.password = 'Add a lowercase letter.';
+        newErrors.password = '小文字を追加してください。';
       } else if (!/[A-Z]/.test(value)) {
-        newErrors.password = 'Add an uppercase letter.';
+        newErrors.password = '大文字を追加してください。';
       } else if (!/\d/.test(value)) {
-        newErrors.password = 'Add a number.';
+        newErrors.password = '数字を追加してください。';
       } else {
         delete newErrors.password;
       }
     }
 
     if (field === 'password_confirm' && touched.password_confirm && value !== formData.password) {
-      newErrors.password_confirm = 'Passwords don’t match.';
+      newErrors.password_confirm = 'パスワードが一致しません。';
     } else if (field === 'password_confirm') {
       delete newErrors.password_confirm;
     }
 
     if (field === 'tel' && touched.tel && value && !/^\d+$/.test(value)) {
-      newErrors.tel = 'Phone number should be just numbers.';
+      newErrors.tel = '電話番号は数字のみで入力してください。';
     } else if (field === 'tel') {
       delete newErrors.tel;
     }
@@ -113,7 +113,7 @@ function RegistrationForm() {
 
     // If there’s errors, stop here
     if (Object.keys(errors).length > 0) {
-      alert('The form has some errors.');
+      alert('フォームにエラーがあります。');
       return;
     }
 
@@ -126,14 +126,14 @@ function RegistrationForm() {
       const result = await response.json();
 
       if (response.ok) {
-        setSuccessMsg('User signed up!');
-        alert('You’re registered!');
+        setSuccessMsg('登録が完了しました！');
+        alert('登録が完了しました！');
       } else {
-        setErrMsg('There was an error: ' + JSON.stringify(result.errors));
-        alert('Something went wrong: ' + JSON.stringify(result.errors));
+        setErrMsg('エラーが発生しました: ' + JSON.stringify(result.errors));
+        alert('問題が発生しました: ' + JSON.stringify(result.errors));
       }
     } catch (err) {
-      setErrMsg('Something went wrong with the server.');
+      setErrMsg('サーバーで問題が発生しました。');
       console.log('Submit failed:', err);
     }
   };

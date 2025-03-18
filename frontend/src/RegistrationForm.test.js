@@ -32,7 +32,7 @@ describe('RegistrationForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /登録/i }));
 
     await waitFor(() => {
-      expect(alert).toHaveBeenCalledWith('You’re registered!');
+      expect(alert).toHaveBeenCalledWith('登録が完了しました！');
     });
   });
 
