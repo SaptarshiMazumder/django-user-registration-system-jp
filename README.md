@@ -141,11 +141,24 @@ Run all Django tests to verify backend functionality (registration form validati
 python manage.py test users
 ```
 
+To run the Django tests:
+
+```bash
+python manage.py test users.api.v1.tests
+```
+
 ### React Tests
 
 From the frontend directory, run:
 
 ```bash
+npm test
+```
+
+To run the React tests:
+
+```bash
+cd frontend
 npm test
 ```
 
@@ -194,9 +207,7 @@ The test file frontend/src/RegistrationForm.test.js uses Jest and React Testing 
 
 #### API Endpoints:
 
-The registration API is implemented in users/api_views.py and accessible at http://127.0.0.1:8000/api/users/register/.
-
-The prefecture data API is in the same module and accessible at http://127.0.0.1:8000/api/users/prefs/.
+The registration API is implemented in users/api_views.py and accessible at http://127.0.0.1:8000/api/v1/register/.
 
 #### React Integration:
 
