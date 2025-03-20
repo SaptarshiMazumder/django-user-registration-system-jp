@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_PREFECTURES_URL, API_REGISTER_URL } from './config';
 
 function APIRegistrationForm() {
   // Form stuff
@@ -20,7 +21,7 @@ function APIRegistrationForm() {
   useEffect(() => {
     async function getPrefs() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/v1/prefs/');
+        const response = await fetch(API_PREFECTURES_URL);
         const data = await response.json();
         setPrefs(data);
       } catch (err) {
@@ -111,7 +112,7 @@ function APIRegistrationForm() {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/register/', {
+      const response = await fetch(API_REGISTER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

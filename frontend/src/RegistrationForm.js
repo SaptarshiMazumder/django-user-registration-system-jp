@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { PREFECTURES_URL, REGISTER_URL } from './config';
 function RegistrationForm() {
   // State for the form inputs
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ function RegistrationForm() {
           data = {prefectures: global.prefs}
         }
         else{
-          const response = await fetch('http://127.0.0.1:8000/auth/prefectures/');
+          const response = await fetch(PREFECTURES_URL);
           data = await response.json();
         }
         setPrefs(data.prefectures || [] ); // Ensure prefs is always an array
@@ -113,12 +113,12 @@ function RegistrationForm() {
 
     // If there’s errors, stop here
     if (Object.keys(errors).length > 0) {
-      alert('フォームにエラーがあります。');
+      setErrMsg('フォームにエラーがあります。');
       return;
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/auth/register/', {
+      const response = await fetch(REGISTER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -127,10 +127,16 @@ function RegistrationForm() {
 
       if (response.ok) {
         setSuccessMsg('登録が完了しました！');
-        alert('登録が完了しました！');
+        setFormData({
+          username: '',
+          email: '',
+          password: '',
+          password_confirm: '',
+          tel: '',
+          pref: ''
+        });
       } else {
         setErrMsg('エラーが発生しました: ' + JSON.stringify(result.errors));
-        alert('問題が発生しました: ' + JSON.stringify(result.errors));
       }
     } catch (err) {
       setErrMsg('サーバーで問題が発生しました。');

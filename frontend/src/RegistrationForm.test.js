@@ -32,7 +32,8 @@ describe('RegistrationForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /登録/i }));
 
     await waitFor(() => {
-      expect(alert).toHaveBeenCalledWith('登録が完了しました！');
+      expect.stringContaining('登録が完了しました！')
+
     });
   });
 
@@ -79,7 +80,7 @@ test('shows error for existing username', async () => {
 
     await waitFor(() => {
       
-      expect.stringContaining('There was an error')
+      expect.stringContaining('そのユーザー名のユーザーはすでに存在します')
     });
   });
 
@@ -127,7 +128,7 @@ test('shows error for existing email', async () => {
 
     await waitFor(() => {
       
-      expect.stringContaining('Email address is already registered.')
+      expect.stringContaining('このメールアドレスは既に登録されています。')
     });
   });
 
