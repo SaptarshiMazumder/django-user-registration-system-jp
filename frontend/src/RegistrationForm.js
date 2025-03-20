@@ -135,8 +135,12 @@ function RegistrationForm() {
           tel: '',
           pref: ''
         });
-      } else {
+      }
+       else if(result.errors){
         setErrMsg('エラーが発生しました: ' + JSON.stringify(result.errors));
+      }
+      else {
+        setErrMsg('エラーが発生しました');
       }
     } catch (err) {
       setErrMsg('サーバーで問題が発生しました。');
@@ -157,6 +161,8 @@ function RegistrationForm() {
             name="username"
             value={formData.username}
             onChange={handleFormDataChange}
+            onBlur={(e) => validateField(e.target.name, e.target.value)} 
+
           />
           {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
         </div>

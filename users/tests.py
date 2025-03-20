@@ -1,4 +1,3 @@
-
 from django.test import TestCase
 from django.urls import reverse
 from .forms import UserRegistrationForm
@@ -60,6 +59,76 @@ class UserRegistrationFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('password_confirm', form.errors)
 
+    # Additional form validation tests
+
+    def test_short_password(self):
+        form_data = {
+            'username': 'eren_yeager',
+            'email': 'eren@aot.com',
+            'password': 'Mik@s6',  # less than 8 characters
+            'password_confirm': 'Mik@s6',
+            'tel': '0987654321',
+            'pref': self.pref.id,
+        }
+        form = UserRegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+    def test_password_missing_uppercase(self):
+        form_data = {
+            'username': 'john',
+            'email': 'john@wwe.com',
+            'password': 'johncena#17',
+            'password_confirm': 'johncena#17',
+            'tel': '0987654321',
+            'pref': self.pref.id,
+        }
+        form = UserRegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+    def test_password_missing_lowercase(self):
+        form_data = {
+            'username': 'john',
+            'email': 'john@wwe.com',
+            'password': 'JOHNCENA#17',
+            'password_confirm': 'JOHNCENA#17',
+            'tel': '0987654321',
+            'pref': self.pref.id,
+        }
+        form = UserRegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+    def test_password_missing_digit(self):
+        form_data = {
+            'username': 'goku',
+            'email': 'goku@dbz.com',
+            'password': 'gokuSSJ',
+            'password_confirm': 'gokuSSJ',
+            'tel': '0987654321',
+            'pref': self.pref.id,
+        }
+        form = UserRegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+    def test_non_numeric_phone(self):
+        form_data = {
+            'username': 'gohan',
+            'email': 'gohen@dbz.com',
+            'password': 'gohanSSJ2',
+            'password_confirm': 'gohanSSJ2',
+            'tel': '34564sds32534',
+            'pref': self.pref.id,
+        }
+        form = UserRegistrationForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('tel', form.errors)
+
+    
+
+
 class RegistrationViewTest(TestCase):
     def setUp(self):
         self.pref = Pref.objects.create(name="Osaka")
@@ -81,3 +150,11 @@ class RegistrationViewTest(TestCase):
         response = self.client.post(reverse('register'), data=form_data)
         self.assertRedirects(response, reverse('registration_success'))
         self.assertTrue(User.objects.filter(email='titan.slayer@aot.com').exists())
+
+
+
+    
+
+
+
+    
