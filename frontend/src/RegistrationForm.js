@@ -10,10 +10,13 @@ function RegistrationForm() {
     tel: '',
     pref: ''
   });
+    // State for success and error messages
 
   const [successMsg, setSuccessMsg] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [errors, setErrors] = useState({});
+    // State for list of prefectures (loaded from backend route)
+
   const [prefs, setPrefs] = useState([]);
   const [touched, setTouched] = useState({});
 
@@ -21,15 +24,12 @@ function RegistrationForm() {
   useEffect(() => {
    async function getPrefs() {
       try {
-        let data;
-        if(global.prefs){
-          data = {prefectures: global.prefs}
-        }
-        else{
+
           const response = await fetch(PREFECTURES_URL);
-          data = await response.json();
-        }
+          const data = await response.json();
         setPrefs(data.prefectures || [] ); // Ensure prefs is always an array
+
+        
       } catch (err) {
         console.error('Couldn’t fetch prefectures:', err);
         setPrefs([]); // Ensure prefs is an empty array in case of error
@@ -49,18 +49,20 @@ function RegistrationForm() {
   // Check errors for a specific field
   const validateField = (field, value) => {
     let newErrors = { ...errors };
+    // Username validation (at least 3 characters)
 
     if (field === 'username' && touched.username && value.trim().length < 3) {
       newErrors.username = 'ユーザー名は3文字以上である必要があります。';
     } else if (field === 'username') {
       delete newErrors.username;
     }
-
+    // Email validation (basic format check)
     if (field === 'email' && touched.email && !/\S+@\S+\.\S+/.test(value)) {
       newErrors.email = '有効なメールアドレスではありません。';
     } else if (field === 'email') {
       delete newErrors.email;
     }
+  // Password validation (8+ chars, includes uppercase lowercase  number)
 
     if (field === 'password' && touched.password) {
       if (value.length < 8) {
@@ -75,13 +77,14 @@ function RegistrationForm() {
         delete newErrors.password;
       }
     }
+        // Confirm password confirm matches password
 
     if (field === 'password_confirm' && touched.password_confirm && value !== formData.password) {
       newErrors.password_confirm = 'パスワードが一致しません。';
     } else if (field === 'password_confirm') {
       delete newErrors.password_confirm;
     }
-
+      // Telephone number is only nums
     if (field === 'tel' && touched.tel && value && !/^\d+$/.test(value)) {
       newErrors.tel = '電話番号は数字のみで入力してください。';
     } else if (field === 'tel') {
@@ -111,7 +114,7 @@ function RegistrationForm() {
     // Run validation on everything
     Object.keys(formData).forEach((key) => validateField(key, formData[key]));
 
-    // If there’s errors, stop here
+    // If there are errors, prevent submission
     if (Object.keys(errors).length > 0) {
       setErrMsg('フォームにエラーがあります。');
       return;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { API_PREFECTURES_URL, API_REGISTER_URL } from './config';
 
 function APIRegistrationForm() {
-  // Form stuff
+  // State to store form data
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -11,9 +11,14 @@ function APIRegistrationForm() {
     tel: '',
     pref: ''
   });
+    // State for success and error messages
+
   const [successMsg, setSuccessMsg] = useState('');
   const [errMsg, setErrMsg] = useState('');
+
+  // State for list of prefectures (loaded from API)
   const [prefs, setPrefs] = useState([]);
+  // State for validation errors and tracking touched fields
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
@@ -43,17 +48,24 @@ function APIRegistrationForm() {
   const validateField = (name, value) => {
     let newErrors = { ...errors };
 
+
+    // Username validation (at least 3 characters)
+
     if (name === 'username' && touched.username && value.trim().length < 3) {
       newErrors.username = 'ユーザー名は3文字以上である必要があります。';
     } else if (name === 'username') {
       delete newErrors.username;
     }
 
+    // Email validation (basic format check)
+
     if (name === 'email' && touched.email && !/\S+@\S+\.\S+/.test(value)) {
       newErrors.email = '有効なメールアドレスではありません。';
     } else if (name === 'email') {
       delete newErrors.email;
     }
+
+    // Password validation (8+ chars, includes uppercase lowercase  number)
 
     if (name === 'password' && touched.password) {
       if (value.length < 8) {
@@ -69,11 +81,15 @@ function APIRegistrationForm() {
       }
     }
 
+        // Confirm password confirm matches password
+
     if (name === 'password_confirm' && touched.password_confirm && value !== formData.password) {
       newErrors.password_confirm = 'パスワードが一致しません。';
     } else if (name === 'password_confirm') {
       delete newErrors.password_confirm;
     }
+
+        // Telephone number is only nums
 
     if (name === 'tel' && touched.tel && value && !/^\d+$/.test(value)) {
       newErrors.tel = '電話番号は数字のみで入力してください。';
@@ -102,10 +118,10 @@ function APIRegistrationForm() {
       pref: true
     });
 
-    // Validate all fields
+    // Validate all fields before submission
     Object.keys(formData).forEach((key) => validateField(key, formData[key]));
 
-    // Stop if there’s errors
+    // If there are errors, prevent submission
     if (Object.keys(errors).length > 0) {
       setErrMsg('フォームにエラーがあります。');
       return;
@@ -120,6 +136,7 @@ function APIRegistrationForm() {
 
       if (response.ok) {
         setSuccessMsg('登録が完了しました！');
+        // Reset form after successful submission
         setFormData({
           username: '',
           email: '',
