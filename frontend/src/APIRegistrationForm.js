@@ -108,7 +108,7 @@ function APIRegistrationForm() {
     setSuccessMsg('');
     setErrMsg('');
 
-    // Mark everything as touched to show errors
+    // Mark all fields as touched to show errors if they’re empty
     setTouched({
       username: true,
       email: true,
@@ -118,7 +118,7 @@ function APIRegistrationForm() {
       pref: true
     });
 
-    // Validate all fields before submission
+    // Run validation on everything
     Object.keys(formData).forEach((key) => validateField(key, formData[key]));
 
     // If there are errors, prevent submission
@@ -147,7 +147,11 @@ function APIRegistrationForm() {
         });
       } else {
         const errorData = await response.json();
-        setErrMsg('エラーが発生しました: ' + JSON.stringify(errorData));
+        let errorMessages = '';
+        for (const field in errorData) {
+          errorMessages += errorData[field].join(', ') + '\n ';
+        }
+        setErrMsg('エラーが発生しました: ' + errorMessages);
       }
     } catch (err) {
       setErrMsg('サーバーで問題が発生しました。');

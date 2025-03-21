@@ -138,11 +138,14 @@ function RegistrationForm() {
           tel: '',
           pref: ''
         });
-      }
-       else if(result.errors){
-        setErrMsg('エラーが発生しました: ' + JSON.stringify(result.errors));
-      }
-      else {
+      }  
+       else if (result.errors) {
+        let errorMessages = '';
+        for (const field in result.errors) {
+          errorMessages += result.errors[field].join(', ') + '\n' 
+        }
+        setErrMsg('エラーが発生しました: ' + errorMessages);
+      } else {
         setErrMsg('エラーが発生しました');
       }
     } catch (err) {
