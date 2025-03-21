@@ -1,4 +1,8 @@
-# TG Assignment Project
+English follows Japanese
+
+<!-- Japanese -->
+
+# Tokyo Gas Assignment Project
 
 ## Project Overview
 
@@ -239,3 +243,247 @@ The application uses SQLite by default (stored in db.sqlite3). Use Django Admin 
 ### Prefecture Data:
 
 Make sure to seed your Pref table with valid entries (e.g., Tokyo, Osaka, Hokkaido) either via the shell.
+
+---
+
+# TG 課題プロジェクト
+
+## プロジェクト概要
+
+このリポジトリは、ユーザー登録に関する多岐にわたる課題の解決策です。主に以下の 3 つのタスクが含まれています。
+
+1. **課題 1：Django 登録フォーム**
+
+   - Django で構築されたカスタムユーザー登録フォーム。
+   - Django のデフォルトをオーバーライドし、`tel`と`pref`（`Pref`モデルへの ForeignKey）の 2 つのフィールドを追加するカスタムユーザーモデル。
+   - ユーザー名、メールアドレス、パスワード、電話番号、都道府県に対するサーバー側の検証。
+   - 登録機能を確認するための自動テスト。
+
+2. **課題 2：React によるリアルタイム検証**
+
+   - サーバー側のルールを反映したリアルタイム（クライアント側）検証を実装する React ベースの登録フォーム。
+   - ユーザーインタラクションをシミュレートし、検証が期待どおりに機能することを確認する Jest および React Testing Library を使用したテストケース。
+
+3. **課題 3：DRF と React の統合による登録 API**
+   - ユーザー登録用の Django Rest Framework（DRF）で構築された RESTful API エンドポイント。
+   - 都道府県のリストを返す API エンドポイント。
+   - 手動 ID 入力ではなく、API を登録に使用する（都道府県のドロップダウンを含む）別の React コンポーネント。
+   - Django API と React 統合の両方に対する自動テスト。
+
+## バックエンド（Django）
+
+バックエンドは、Django フレームワークを使用して構築されています。ユーザー登録、認証、およびその他のユーザー関連の操作のための API エンドポイントを提供します。
+
+## フロントエンド（React）
+
+フロントエンドは、Create React App を使用して React で構築されています。登録およびバックエンド API とのインタラクションのためのユーザーインターフェースを提供します。
+
+### セットアップ
+
+1. **リポジトリをクローンします：**
+
+   ```bash
+   git clone https://github.com/SaptarshiMazumder/tg_assignment.git
+   cd tg_assignment
+   ```
+
+2. **仮想環境を作成してアクティブ化します：**
+
+   ```bash
+   python -m venv env
+   # Windowsの場合：env\Scripts\activate
+   ```
+
+3. **依存関係をインストールします：**
+
+   requirements.txt に Django、djangorestframework、django-cors-headers などが含まれていることを確認してください。
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **マイグレーションを実行します：**
+
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+5. **都道府県データをシードします：**
+
+   アプリケーションが正しく機能するためには、データベースにいくつかの初期都道府県レコードが必要です。
+
+   ```bash
+   python manage.py shell
+   ```
+
+   次に実行します：
+
+   ```python
+   from users.models import Pref
+   if not Pref.objects.exists():
+       Pref.objects.create(name="Tokyo")
+       Pref.objects.create(name="Osaka")
+       Pref.objects.create(name="Kyoto")
+   exit()
+   ```
+
+6. **Django サーバーを起動します：**
+
+   ```bash
+   python manage.py runserver
+   ```
+
+   バックエンド：
+   HTML 登録フォームは以下で利用可能です：
+   http://127.0.0.1:8000/users/register/
+   Django Rest API エンドポイントは以下にあります：
+   http://127.0.0.1:8000/api/v1/register/
+
+7. **フロントエンド**
+
+   React フロントエンドのエンドポイントは以下にあります：
+   http://127.0.0.1:3000/register/
+   これは、フォームビューと API ビューの両方にアクセスするためのフロントエンドとして機能します。
+
+8. **React のセットアップ**
+
+   React プロジェクトディレクトリに移動します：
+
+   ```bash
+   cd frontend
+   ```
+
+9. **npm の依存関係をインストールします：**
+
+   ```bash
+   npm install
+   ```
+
+10. **React 開発サーバーを起動します：**
+
+    ```bash
+    npm start
+    ```
+
+    デフォルトでは、React アプリは http://localhost:3000 で実行されます。
+
+リアルタイム検証フォーム（課題 2）は、RegistrationForm.js から表示できます。
+API ベースの登録フォーム（課題 3）を確認するには、App.js が APIRegistrationForm.js をインポートしてレンダリングしていることを確認してください。
+
+### API エンドポイント
+
+API エンドポイントは、`tg_assignment/users/api/v1/urls.py`で定義されています。主要なエンドポイントは次のとおりです：
+
+- `/api/v1/register/`：ユーザー登録。
+- `/api/v1/login/`：ユーザーログイン。
+  .
+
+## テスト
+
+### Django テスト
+
+すべての Django テストを実行して、バックエンド機能（登録フォームの検証、API エンドポイントなど）を確認します：
+
+```bash
+python manage.py test users
+```
+
+Django テストを実行するには：
+
+```bash
+python manage.py test users.api.v1.tests
+```
+
+### React テスト
+
+frontend ディレクトリから、以下を実行します：
+
+```bash
+npm test
+```
+
+React テストを実行するには：
+
+```bash
+cd frontend
+npm test
+```
+
+これにより、テストケース（たとえば、RegistrationForm.test.js のテストケース）が実行され、React フォームが期待どおりに動作することが検証されます。
+
+## 課題要件の確認方法
+
+### 課題 1：Django 登録フォーム
+
+#### カスタムユーザーモデルとフォーム：
+
+users/models.py ファイルは、カスタムユーザーモデル「User」（AbstractUser を拡張）と Pref モデルを定義します。
+
+users/forms.py の登録フォームは、以下を強制します：
+
+- ユーザー名は 3 文字以上である必要があります。
+- メールアドレスは検証され、重複がないか確認されます。
+- パスワードは、8 文字以上、大文字 1 つ、小文字 1 つ、数字 1 つが必要です。
+- 電話番号は数字のみを含む必要があります。
+- 都道府県は既存のレコードから選択する必要があります。
+
+#### 手動テスト：
+
+http://127.0.0.1:8000/users/register/に移動し、有効なデータと無効なデータの両方でフォームを送信します。
+
+#### 自動テスト：
+
+python manage.py test users で Django テストを実行して、すべてのフォーム検証とビューの動作が正しいことを確認します。
+
+### 課題 2：リアルタイム検証を備えた React フロントエンド
+
+#### React フロントエンド：
+
+frontend/src/RegistrationForm.js コンポーネントは、ユーザーが入力するときに即時検証フィードバックを送信するためのフロントエンドを提供します。
+よりクリーンな編成のために、課題 2 と 3 のフロントエンドは分離されています。
+
+#### 手動テスト：
+
+ブラウザで React アプリを http://localhost:3000 で開き、無効なデータを入力して検証メッセージを表示してみてください。
+
+#### 自動テスト：
+
+テストファイル frontend/src/RegistrationForm.test.js は、Jest と React Testing Library を使用してインタラクションをシミュレートし、エラーメッセージを検証します。
+
+### 課題 3：DRF API と React の統合
+
+#### API エンドポイント：
+
+登録 API は users/api_views.py に実装されており、http://127.0.0.1:8000/api/v1/register/でアクセスできます。
+
+#### React の統合：
+
+frontend/src/APIRegistrationForm.js コンポーネントは、API から都道府県のリストを取得し、ドロップダウンに表示します。次に、登録データを API に送信します。
+よりクリーンな編成のために、課題 2 と 3 のフロントエンドは分離されています。
+
+#### 手動テスト：
+
+App.js でレンダリングされたコンポーネントを APIRegistrationForm に切り替え、新しいユーザーを登録します。
+
+都道府県のドロップダウンが入力され、登録が正しく機能することを確認します。
+
+#### 自動テスト：
+
+Django テストは API エンドポイントをカバーし、React テスト（作成されている場合）は API 呼び出しの動作をシミュレートできます。
+
+## 追加情報
+
+### CSRF と CORS：
+
+開発中、CSRF 保護は一時的に無効にするか、API ビューのデコレータ（例：@csrf_exempt）を介して処理できます。
+
+django-cors-headers は、http://localhost:3000 からのリクエストを許可するように構成されています。
+
+### データベース：
+
+アプリケーションはデフォルトで SQLite（db.sqlite3 に保存）を使用します。Django Admin またはシェルを使用して、データベースレコードを検査します。
+
+### 都道府県データ：
+
+シェルを介して、Pref テーブルに有効なエントリ（例：Tokyo、Osaka、Hokkaido）をシードしてください。
