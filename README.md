@@ -92,7 +92,7 @@
    HTML 登録フォームは以下で利用可能です：
    http://127.0.0.1:8000/auth/register/
    Django Rest API エンドポイントは以下にあります：
-   http://127.0.0.1:8000/api/v1/register/
+   http://127.0.0.1:8000/api/v1/auth/register/
 
 7. **フロントエンド**
 
@@ -127,10 +127,10 @@ API ベースの登録フォーム（課題 3）を確認するには、App.js �
 
 ### API エンドポイント
 
-API エンドポイントは、`tg_assignment/users/api/v1/urls.py`で定義されています。主要なエンドポイントは次のとおりです：
+API エンドポイントは、`tg_assignment/users/api/v1/auth/urls.py`で定義されています。主要なエンドポイントは次のとおりです：
 
-- `/api/v1/register/`：ユーザー登録。
-- `/api/v1/login/`：ユーザーログイン。
+- `/api/v1/auth/register/`：ユーザー登録。
+- `/api/v1/auth/login/`：ユーザーログイン。
   .
 
 ## テスト
@@ -209,7 +209,7 @@ frontend/src/RegistrationForm.js コンポーネントは、ユーザーが入�
 
 #### API エンドポイント：
 
-登録 API は users/api_views.py に実装されており、http://127.0.0.1:8000/api/v1/register/でアクセスできます。
+登録 API は users/api_views.py に実装されており、http://127.0.0.1:8000/api/v1/auth/register/でアクセスできます。
 
 #### React の統合：
 
@@ -336,7 +336,7 @@ The frontend is built using React, with Create React App. It provides a user int
    The HTML registration form is available at:
    http://127.0.0.1:8000/auth/register/
    The Django Rest API endpoint is at:
-   http://127.0.0.1:8000/api/v1/register/
+   http://127.0.0.1:8000/api/v1/auth/register/
 
 7. **FrontEnd**
 
@@ -371,10 +371,10 @@ To check the API-based registration form (Assignment 3), ensure that App.js impo
 
 ### API Endpoints
 
-The API endpoints are defined in `tg_assignment/users/api/v1/urls.py`. Key endpoints include:
+The API endpoints are defined in `tg_assignment/users/api/v1/auth/urls.py`. Key endpoints include:
 
-- `/api/v1/register/`: User registration.
-- `/api/v1/login/`: User login.
+- `/api/v1/auth/register/`: User registration.
+- `/api/v1/auth/login/`: User login.
   .
 
 ## Testing
@@ -453,7 +453,7 @@ The test file frontend/src/RegistrationForm.test.js uses Jest and React Testing 
 
 #### API Endpoints:
 
-The registration API is implemented in users/api_views.py and accessible at http://127.0.0.1:8000/api/v1/register/.
+The registration API is implemented in users/api_views.py and accessible at http://127.0.0.1:8000/api/v1/auth/register/.
 
 #### React Integration:
 

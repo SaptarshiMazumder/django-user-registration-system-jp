@@ -34,7 +34,7 @@ class UserRegistrationAPIViewTest(APITestCase):
     def setUp(self):
      
         self.pref = Pref.objects.create(name="Tokyo")
-        # Get the URL for the api_register view defined in the urls.py file in users/api/v1/ directory
+        # Get the URL for the api_register view defined in the urls.py file in users/api/v1/auth/ directory
         self.api_register_url = reverse('api_register')
 
     # Test successful registration case

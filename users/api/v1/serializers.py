@@ -36,7 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
     # Define the tel field with validators
     tel = serializers.IntegerField(required=False,
                                 allow_null=True,
-                                default=0,
+                                default=0, 
                                 validators=[RegexValidator(r'^\d*$', "電話番号は数字のみを含める必要があります。")])
 
 

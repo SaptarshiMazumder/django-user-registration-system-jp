@@ -163,8 +163,8 @@ function APIRegistrationForm() {
   return (
     <div>
       <h1>API登録フォーム</h1>
-      <p>これはDjango Rest APIのフロントエンドです。</p>
-      <form onSubmit={handleSubmit}>
+      <p>課題3のフロントエンド</p>
+      <form className='form-container' onSubmit={handleSubmit}>
         <div>
           <label>ユーザー名</label>
           <input
