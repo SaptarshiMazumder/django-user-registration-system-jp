@@ -161,10 +161,10 @@ function APIRegistrationForm() {
   };
 
   return (
-    <div>
+    <div className='form-container'>
       <h1>API登録フォーム</h1>
       <p>課題3のフロントエンド</p>
-      <form className='form-container' onSubmit={handleSubmit}>
+      <form  onSubmit={handleSubmit}>
         <div>
           <label>ユーザー名</label>
           <input

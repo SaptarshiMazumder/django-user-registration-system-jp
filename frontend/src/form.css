@@ -2,8 +2,11 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
+  padding: 10px;
   width: 500px;
   margin: 20px auto;
+  border: #3e8e41 1px solid;
+  border-radius: 10px;
 }
 
 .form-container label {
@@ -25,6 +28,7 @@
   border-radius: 4px;
   cursor: pointer;
   margin: 10px;
+  width: 100px;
 }
 
 .form-container button:hover {

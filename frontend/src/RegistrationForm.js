@@ -156,10 +156,10 @@ function RegistrationForm() {
   };
 
   return (
-    <div>
+    <div className='form-container'>
       <h1>登録フォーム</h1>
       <p>課題2のフロントエンド</p>
-      <form className='form-container' onSubmit={handleSubmit}>
+      <form  onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">ユーザー名:</label>
           <input
