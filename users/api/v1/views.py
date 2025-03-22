@@ -39,13 +39,13 @@ class UserRegistrationAPIView(APIView):
 
 
             # Create a new user using the validated data
-            user = User.objects.create_user(
+            user = User.objects.create(
                 username=validated_data['username'],
                 email=validated_data['email'],
                 password=validated_data['password'],
                 tel=validated_data.get('tel'),
                 pref = validated_data.get('pref')
             )
-            # Return the serialized user and success status         
+            # Return the serialized user and success status
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)

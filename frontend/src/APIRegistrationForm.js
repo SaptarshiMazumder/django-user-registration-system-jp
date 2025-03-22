@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API_PREFECTURES_URL, API_REGISTER_URL } from './config';
+import './form.css';
 
 function APIRegistrationForm() {
   // State to store form data
@@ -8,7 +9,7 @@ function APIRegistrationForm() {
     email: '',
     password: '',
     password_confirm: '',
-    tel: '',
+    tel: null,
     pref: ''
   });
     // State for success and error messages

@@ -76,9 +76,9 @@
    ```python
    from users.models import Pref
    if not Pref.objects.exists():
-       Pref.objects.create(name="Tokyo")
-       Pref.objects.create(name="Osaka")
-       Pref.objects.create(name="Kyoto")
+       Pref.objects.create(name="東京")
+       Pref.objects.create(name="大阪")
+       Pref.objects.create(name="京都")
    exit()
    ```
 
@@ -90,7 +90,7 @@
 
    バックエンド：
    HTML 登録フォームは以下で利用可能です：
-   http://127.0.0.1:8000/users/register/
+   http://127.0.0.1:8000/auth/register/
    Django Rest API エンドポイントは以下にあります：
    http://127.0.0.1:8000/api/v1/register/
 
@@ -184,7 +184,7 @@ users/forms.py の登録フォームは、以下を強制します：
 
 #### 手動テスト：
 
-http://127.0.0.1:8000/users/register/に移動し、有効なデータと無効なデータの両方でフォームを送信します。
+http://127.0.0.1:8000/auth/register/に移動し、有効なデータと無効なデータの両方でフォームを送信します。
 
 #### 自動テスト：
 
@@ -240,7 +240,7 @@ django-cors-headers は、http://localhost:3000 からのリクエストを許�
 
 ### 都道府県データ：
 
-シェルを介して、Pref テーブルに有効なエントリ（例：Tokyo、Osaka、Hokkaido）をシードしてください。
+シェルを介して、Pref テーブルに有効なエントリ（例：東京、大阪、北海道）をシードしてください。
 
 ---
 
@@ -320,9 +320,9 @@ The frontend is built using React, with Create React App. It provides a user int
    ```python
    from users.models import Pref
    if not Pref.objects.exists():
-       Pref.objects.create(name="Tokyo")
-       Pref.objects.create(name="Osaka")
-       Pref.objects.create(name="Kyoto")
+       Pref.objects.create(name="東京")
+       Pref.objects.create(name="大阪")
+       Pref.objects.create(name="京都")
    exit()
    ```
 
@@ -334,7 +334,7 @@ The frontend is built using React, with Create React App. It provides a user int
 
    Backend:
    The HTML registration form is available at:
-   http://127.0.0.1:8000/users/register/
+   http://127.0.0.1:8000/auth/register/
    The Django Rest API endpoint is at:
    http://127.0.0.1:8000/api/v1/register/
 
@@ -428,7 +428,7 @@ The registration form in users/forms.py enforces:
 
 #### Manual Testing:
 
-Navigate to http://127.0.0.1:8000/users/register/ and submit the form with both valid and invalid data.
+Navigate to http://127.0.0.1:8000/auth/register/ and submit the form with both valid and invalid data.
 
 #### Automated Testing:
 

@@ -50,7 +50,7 @@ class UserRegistrationForm(forms.ModelForm):
                                        error_messages={'required': 'パスワード確認は必須です。'})
     
     # Phone number field with number validation
-    tel = forms.CharField(
+    tel = forms.IntegerField(
         label="電話番号",
         required=False,
         validators=[

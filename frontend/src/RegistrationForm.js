@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PREFECTURES_URL, REGISTER_URL } from './config';
+import './form.css';
 function RegistrationForm() {
   // State for the form inputs
   const [formData, setFormData] = useState({
@@ -7,7 +8,7 @@ function RegistrationForm() {
     email: '',
     password: '',
     password_confirm: '',
-    tel: '',
+    tel: null,
     pref: ''
   });
     // State for success and error messages

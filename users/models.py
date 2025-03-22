@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ImproperlyConfigured
+from django.core.validators import RegexValidator
 
 class Pref(models.Model):
     '''
@@ -22,8 +23,8 @@ class User(AbstractUser):
     and extended by adding tel and pref fields
     '''
     
-    # field to store phone number
-    tel = models.CharField(max_length=20, null=True, blank=True)
+    # field to store phone number, as number
+    tel = models.IntegerField(null=True, blank=True)
 
     # field to store prefecture, it is a foreign key to Pref model
     pref = models.ForeignKey(Pref, on_delete=models.SET_NULL,
@@ -32,5 +33,4 @@ class User(AbstractUser):
     # returns a string representation of the user
     def __str__(self):
         return self.username + " " + self.email + " " + (self.pref.name if self.pref else "")
-        # return self.username 
-
+        # return self.username
