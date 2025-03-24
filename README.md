@@ -125,13 +125,7 @@
 リアルタイム検証フォーム（課題 2）は、RegistrationForm.js から表示できます。
 API ベースの登録フォーム（課題 3）を確認するには、App.js が APIRegistrationForm.js をインポートしてレンダリングしていることを確認してください。
 
-### API エンドポイント
 
-API エンドポイントは、`tg_assignment/users/api/v1/auth/urls.py`で定義されています。主要なエンドポイントは次のとおりです：
-
-- `/api/v1/auth/register/`：ユーザー登録。
-- `/api/v1/auth/login/`：ユーザーログイン。
-  .
 
 ## テスト
 
@@ -369,12 +363,6 @@ The frontend is built using React, with Create React App. It provides a user int
 You can view the real-time validation form (Assignment 2) via RegistrationForm.js.
 To check the API-based registration form (Assignment 3), ensure that App.js imports and renders APIRegistrationForm.js.
 
-### API Endpoints
-
-The API endpoints are defined in `tg_assignment/users/api/v1/auth/urls.py`. Key endpoints include:
-
-- `/api/v1/auth/register/`: User registration.
-- `/api/v1/auth/login/`: User login.
   .
 
 ## Testing
