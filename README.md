@@ -1,6 +1,6 @@
 ## English follows Japanese
 
-# Tokyo Gas 課題プロジェクト
+
 
 ## プロジェクト概要
 
@@ -238,7 +238,7 @@ django-cors-headers は、http://localhost:3000 からのリクエストを許�
 
 ---
 
-# Tokyo Gas Assignment Project
+
 
 ## Project Overview
 
